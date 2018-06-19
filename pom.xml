@@ -66,6 +66,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.vaadin.teemusa</groupId>
+            <artifactId>sidemenu</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-java8</artifactId>
         </dependency>
@@ -122,6 +127,11 @@
                 <groupId>org.vaadin.teemu</groupId>
                 <artifactId>switch</artifactId>
                 <version>3.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.vaadin.teemusa</groupId>
+                <artifactId>sidemenu</artifactId>
+                <version>2.0.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

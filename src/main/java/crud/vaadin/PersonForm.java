@@ -17,7 +17,6 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 @UIScope
 @SpringComponent
 public class PersonForm extends AbstractForm<Person> {
-
     private static final long serialVersionUID = 1L;
 
     EventBus.UIEventBus eventBus;

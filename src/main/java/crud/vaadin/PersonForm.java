@@ -1,6 +1,5 @@
 package crud.vaadin;
 
-import com.vaadin.data.converter.LocalDateToDateConverter;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Component;
@@ -45,17 +44,6 @@ public class PersonForm extends AbstractForm<Person> {
         setResetHandler(p -> eventBus.publish(this, new PersonModifiedEvent(p)));
 
         setSizeUndefined();
-    }
-
-    @Override
-    protected void bind() {
-        // DateField in Vaadin 8 uses LocalDate by default, the backend
-        // uses plain old java.util.Date, thus we need a converter, using
-        // built in helper here
-        getBinder()
-                .forMemberField(birthDay)
-                .withConverter(new LocalDateToDateConverter());
-        super.bind();
     }
 
     @Override

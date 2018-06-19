@@ -42,8 +42,8 @@ public class MainUI extends UI {
     EventBus.UIEventBus eventBus;
 
     private MGrid<Person> list = new MGrid<>(Person.class)
-            .withProperties("id", "name", "email")
-            .withColumnHeaders("id", "Name", "Email")
+            .withProperties("name", "email")
+            .withColumnHeaders("Name", "Email")
             // not yet supported by V8
             //.setSortableProperties("name", "email")
             .withFullWidth();
@@ -143,7 +143,7 @@ public class MainUI extends UI {
         edit(new Person());
     }
 
-    public void edit(ClickEvent e) {
+    public void edit(ClickEvent clickEvent) {
         edit(list.asSingleSelect().getValue());
     }
 

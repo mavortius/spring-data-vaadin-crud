@@ -7,6 +7,7 @@ import com.vaadin.shared.data.sort.SortDirection;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 import crud.backend.Person;
 import crud.backend.PersonRepository;
@@ -21,6 +22,7 @@ import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.grid.MGrid;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
+import sun.plugin.util.NotifierObject;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -138,6 +140,7 @@ public class PersonListView extends MVerticalLayout implements View {
     public void remove() {
         repo.delete(list.asSingleSelect().getValue());
         list.deselectAll();
+        Notification.show("Person deleted", Notification.Type.WARNING_MESSAGE);
         listEntities();
     }
 

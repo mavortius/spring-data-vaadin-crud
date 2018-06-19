@@ -4,6 +4,7 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.DateField;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import crud.backend.Person;
 import crud.backend.PersonRepository;
@@ -37,6 +38,7 @@ public class PersonForm extends AbstractForm<Person> {
         setSavedHandler(person -> {
             // persist changes
             repo.save(person);
+            Notification.show("Person saved", Notification.Type.HUMANIZED_MESSAGE);
             // send the event for other parts of the application
             eventBus.publish(this, new PersonModifiedEvent(person));
         });

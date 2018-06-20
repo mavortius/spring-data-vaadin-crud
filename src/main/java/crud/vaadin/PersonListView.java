@@ -1,8 +1,5 @@
 package crud.vaadin;
 
-import com.vaadin.data.provider.Query;
-import com.vaadin.data.provider.QuerySortOrder;
-import com.vaadin.data.provider.Sort;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -11,10 +8,8 @@ import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Notification;
 import crud.backend.Person;
+import crud.backend.PersonDataProvider;
 import crud.backend.PersonRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.vaadin.artur.spring.dataprovider.FilterablePageableDataProvider;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
@@ -26,7 +21,6 @@ import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
 
 @UIScope
 @SpringView(name = PersonListView.VIEW_NAME)
@@ -35,13 +29,14 @@ public class PersonListView extends MVerticalLayout implements View {
 
     static final String VIEW_NAME = "persons";
 
-    private PersonRepository repo;
-    private PersonForm personForm;
-    private EventBus.UIEventBus eventBus;
+    private final PersonRepository repo;
+    private final PersonDataProvider dataProvider;
+    private final PersonForm personForm;
+    private final EventBus.UIEventBus eventBus;
 
     private MGrid<Person> list = new MGrid<>(Person.class)
-            .withProperties("name", "email")
-            .withColumnHeaders("Name", "Email")
+            .withProperties("id", "name", "email")
+            .withColumnHeaders("ID", "Name", "Email")
             // not yet supported by V8
             //.setSortableProperties("name", "email")
             .withFullWidth();
@@ -53,29 +48,9 @@ public class PersonListView extends MVerticalLayout implements View {
     private Button delete = new ConfirmButton(VaadinIcons.TRASH,
             "Are you sure you want to delete the entry?", this::remove);
 
-    private FilterablePageableDataProvider<Person, Object> dataProvider = new FilterablePageableDataProvider<Person, Object>() {
-        @Override
-        protected Page<Person> fetchFromBackEnd(Query<Person, Object> query, Pageable pageable) {
-            return repo.findByNameContainsIgnoreCase(getFilter(), pageable);
-        }
-
-        private String getFilter() {
-            return getOptionalFilter().orElse("");
-        }
-
-        @Override
-        protected List<QuerySortOrder> getDefaultSortOrders() {
-            return Sort.asc("name").build();
-        }
-
-        @Override
-        protected int sizeInBackEnd(Query<Person, Object> query) {
-            return Math.toIntExact(repo.countByNameContainsIgnoreCase(getFilter()));
-        }
-    };
-
-    public PersonListView(PersonRepository r, PersonForm f, EventBus.UIEventBus b) {
+    public PersonListView(PersonRepository r, PersonDataProvider d, PersonForm f, EventBus.UIEventBus b) {
         this.repo = r;
+        this.dataProvider = d;
         this.personForm = f;
         this.eventBus = b;
     }
